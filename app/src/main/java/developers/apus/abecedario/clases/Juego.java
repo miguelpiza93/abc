@@ -1,0 +1,139 @@
+package developers.apus.abecedario.clases;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import developers.apus.abecedario.constantes.TipoJuego;
+import developers.apus.abecedario.excepciones.JuegoTerminadoException;
+
+/**
+ * Created by Miguel on 23/02/2016.
+ */
+public class Juego {
+
+    private List<Letra> letras;
+
+    private TipoJuego juego;
+
+    private int puntos;
+
+    private boolean inicio;
+
+    public Juego(JSONObject diccionario){
+        letras = new ArrayList<>();
+        Iterator<String> keys = diccionario.keys();
+        while( keys.hasNext()){
+            String key = keys.next();
+            List<Imagen> imagenes = new ArrayList<>();
+            try {
+                JSONArray array = diccionario.getJSONArray(key);
+                for (int i = 0; i < array.length(); i++){
+                    Imagen imagen = new Imagen(array.getString(i), null);//TODO hacer set del sonido
+                    imagenes.add(imagen);
+                }
+
+                Letra letra = new Letra(key, null, imagenes);//TODO hacer set del sonido
+                letras.add(letra);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Collections.sort(letras, new Comparator<Letra>() {
+            @Override
+            public int compare(Letra a, Letra b) {
+                return a.getId().compareTo(b.getId());
+            }
+        });
+    }
+
+    public Letra getLetraAleatoria() throws JuegoTerminadoException {
+        List<Letra> copia =new ArrayList<>();
+        Collections.copy(copia, letras);
+        Letra letra = null;
+
+        boolean encontrada = false;
+        Random random = new Random();
+
+        do {
+            int id  = random.nextInt(letras.size());
+            letra = letras.get(id);
+            if(!letra.isMostrada()){
+                letra.mostrar();
+                encontrada = true;
+            }
+            else {
+                copia.remove(id);
+            }
+        }
+        while(!encontrada && !copia.isEmpty());
+        if(encontrada)
+            return  letra;
+        else
+            throw new JuegoTerminadoException();
+
+    }
+
+    public Letra getSiguienteLetra() throws JuegoTerminadoException {
+        Letra letra = null;
+        boolean encontrada = false;
+        for (int i = 0; i < letras.size() && !encontrada; i++) {
+            if(!letras.get(i).isMostrada()){
+                letra = letras.get(i);
+                encontrada = true;
+            }
+        }
+        if(encontrada){
+            letra.mostrar();
+            return  letra;
+        }
+        else{
+            throw new JuegoTerminadoException();
+        }
+    }
+
+    public List<Imagen> getOpciones(Letra actual) {
+        ArrayList<Imagen> opciones = new ArrayList<>();
+
+        opciones.add(actual.getImagenAleatoria());
+        Random random = new Random();
+        boolean completo = false;
+        ArrayList<Integer> sacados = new ArrayList<>();
+        while(!completo){
+            int i = random.nextInt(letras.size());
+            Letra act = letras.get(i);
+            if( !act.getId().equals(actual.getId()) && !sacados.contains(i) ){
+                opciones.add(act.getImagenAleatoria());
+                sacados.add(i);
+            }
+            if(sacados.size()== 3){
+                completo = true;
+            }
+        }
+        Collections.shuffle(opciones);
+        return opciones;
+    }
+
+    public boolean verificarRespuesta(Letra letra, Imagen imagen){
+        return imagen.getNombre().startsWith(letra.getId());
+    }
+
+    public List<Letra> getLetras() {
+        return letras;
+    }
+
+    public void reiniciar(){
+        for (Letra letra :
+                letras) {
+            letra.init();
+        }
+    }
+}
