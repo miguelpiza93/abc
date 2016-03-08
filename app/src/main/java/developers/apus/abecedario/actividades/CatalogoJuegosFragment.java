@@ -81,6 +81,7 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
     @Override
     public void callBack(String juego) {
         Intent intent = null;
+        this.juego.reiniciar();
 
         if(juego.toUpperCase().equals(TipoJuego.LETRA_INICIAL)){
             LetraInicialActivity.setJuego(this.juego);

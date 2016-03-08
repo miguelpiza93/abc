@@ -1,5 +1,7 @@
 package developers.apus.abecedario.clases;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +28,10 @@ public class Juego {
     private int puntos;
 
     private boolean inicio;
+
+    private Letra actual;
+
+    private List<Imagen> opciones;
 
     public Juego(JSONObject diccionario){
         letras = new ArrayList<>();
@@ -58,7 +64,7 @@ public class Juego {
     public Letra getLetraAleatoria() throws JuegoTerminadoException {
         List<Letra> copia =new ArrayList<>();
         Collections.copy(copia, letras);
-        Letra letra = null;
+        Letra letra;
 
         boolean encontrada = false;
         Random random = new Random();
@@ -67,7 +73,6 @@ public class Juego {
             int id  = random.nextInt(letras.size());
             letra = letras.get(id);
             if(!letra.isMostrada()){
-                letra.mostrar();
                 encontrada = true;
             }
             else {
@@ -75,14 +80,17 @@ public class Juego {
             }
         }
         while(!encontrada && !copia.isEmpty());
-        if(encontrada)
-            return  letra;
+        if(encontrada) {
+            actual = letra;
+            return letra;
+        }
         else
             throw new JuegoTerminadoException();
 
     }
 
     public Letra getSiguienteLetra() throws JuegoTerminadoException {
+        Log.i("Juego", "inicio getSiguienteLetra");
         Letra letra = null;
         boolean encontrada = false;
         for (int i = 0; i < letras.size() && !encontrada; i++) {
@@ -91,17 +99,19 @@ public class Juego {
                 encontrada = true;
             }
         }
+        Log.i("Juego", "fin getSiguienteLetra");
         if(encontrada){
-            letra.mostrar();
-            return  letra;
+            actual = letra;
+            return letra;
         }
         else{
             throw new JuegoTerminadoException();
         }
     }
 
-    public List<Imagen> getOpciones(Letra actual) {
-        ArrayList<Imagen> opciones = new ArrayList<>();
+    public List<Imagen> generarOpciones() {
+        Log.i("Juego", "inicio generarOpciones");
+        opciones = new ArrayList<>();
 
         opciones.add(actual.getImagenAleatoria());
         Random random = new Random();
@@ -119,11 +129,17 @@ public class Juego {
             }
         }
         Collections.shuffle(opciones);
+        Log.i("Juego", "fin generarOpciones");
         return opciones;
     }
 
-    public boolean verificarRespuesta(Letra letra, Imagen imagen){
-        return imagen.getNombre().startsWith(letra.getId());
+    public boolean verificarRespuesta(int imagen){
+
+        boolean correcto = opciones.get(imagen).getNombre().startsWith(actual.getId());
+        if(correcto){
+            actual.mostrar();
+        }
+        return correcto;
     }
 
     public List<Letra> getLetras() {
@@ -131,9 +147,19 @@ public class Juego {
     }
 
     public void reiniciar(){
+        actual = null;
+        opciones = null;
         for (Letra letra :
                 letras) {
             letra.init();
         }
+    }
+
+    public Letra getActual() {
+        return actual;
+    }
+
+    public List<Imagen> getOpciones() {
+        return opciones;
     }
 }

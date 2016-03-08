@@ -3,31 +3,26 @@ package developers.apus.abecedario.actividades;
 import android.content.Context;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.Collections;
 import java.util.List;
 
 import developers.apus.abecedario.R;
 import developers.apus.abecedario.clases.Imagen;
 import developers.apus.abecedario.clases.Juego;
-import developers.apus.abecedario.clases.Letra;
+import developers.apus.abecedario.constantes.ImagenesId;
 import developers.apus.abecedario.excepciones.JuegoTerminadoException;
 
 public class LetraInicialActivity extends AppCompatActivity implements View.OnClickListener {
-
     private static Juego juego;
-    private Letra actual;
-    private List<Imagen> opciones;
-    private MediaPlayer correcto, incorrecto;
-
+    private MediaPlayer correcto, incorrecto, celebracion;
 
     public static void setJuego(Juego juego) {
         if(LetraInicialActivity.juego == null)
@@ -42,8 +37,11 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_li);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        catch (NullPointerException e){}
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,44 +55,56 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.opcion3).setOnClickListener(this);
         findViewById(R.id.opcion4).setOnClickListener(this);
 
-        incorrecto = MediaPlayer.create( this, R.raw.incorrecto );
-        correcto = MediaPlayer.create( this, R.raw.correcto );
-
         actualizarLayout();
+    }
 
+    @Override protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            public void run() {
+                incorrecto = MediaPlayer.create( LetraInicialActivity.this, R.raw.incorrecto );
+                correcto = MediaPlayer.create( LetraInicialActivity.this, R.raw.correcto );
+            }
+        }).start();
+    }
+
+    @Override protected void onPause() {
+        correcto = null;
+        incorrecto = null;
+        super.onPause();
     }
 
     private void actualizarLayout() {
-        try {
-            actual = juego.getSiguienteLetra();
-            ImageView letra = (ImageView)findViewById(R.id.letra);
-            Resources resources = getResources();
-            final int resourceId = resources.getIdentifier(actual.getId(), "drawable", getPackageName());
-            letra.setImageResource(resourceId);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-            opciones = juego.getOpciones(actual);
+                if (juego.getActual() == null) {
+                    try {
+                        juego.getSiguienteLetra();
+                        juego.generarOpciones();
+                    } catch (JuegoTerminadoException e) {
+                    }
+                }
 
-            ImageView opcion1 = (ImageView)findViewById(R.id.opcion1);
-            final int opcion1Id = resources.getIdentifier(opciones.get(0).getNombre(), "drawable", getPackageName());
-            opcion1.setImageResource(opcion1Id);
+                ImageView letra = (ImageView) findViewById(R.id.letra);
+                letra.setImageResource(ImagenesId.getDrawableId(juego.getActual().getId()));
 
-            ImageView opcion2 = (ImageView)findViewById(R.id.opcion2);
-            final int opcion2Id = resources.getIdentifier(opciones.get(1).getNombre(), "drawable", getPackageName());
-            opcion2.setImageResource(opcion2Id);
+                List<Imagen> opciones = juego.getOpciones();
 
-            ImageView opcion3 = (ImageView)findViewById(R.id.opcion3);
-            final int opcion3Id = resources.getIdentifier(opciones.get(2).getNombre(), "drawable", getPackageName());
-            opcion3.setImageResource(opcion3Id);
+                ImageView opcion1 = (ImageView) findViewById(R.id.opcion1);
+                opcion1.setImageResource(ImagenesId.getDrawableId(opciones.get(0).getNombre()));
 
-            ImageView opcion4 = (ImageView)findViewById(R.id.opcion4);
-            final int opcion4Id = resources.getIdentifier(opciones.get(3).getNombre(), "drawable", getPackageName());
-            opcion4.setImageResource(opcion4Id);
+                ImageView opcion2 = (ImageView) findViewById(R.id.opcion2);
+                opcion2.setImageResource(ImagenesId.getDrawableId(opciones.get(1).getNombre()));
 
+                ImageView opcion3 = (ImageView) findViewById(R.id.opcion3);
+                opcion3.setImageResource(ImagenesId.getDrawableId(opciones.get(2).getNombre()));
 
-        } catch (JuegoTerminadoException e) {
-            Toast.makeText(getApplicationContext(), "Has terminado el juego", Toast.LENGTH_SHORT)
-                    .show();
-        }
+                ImageView opcion4 = (ImageView) findViewById(R.id.opcion4);
+                opcion4.setImageResource(ImagenesId.getDrawableId(opciones.get(3).getNombre()));
+            }
+        });
     }
 
     @Override
@@ -102,33 +112,34 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
         boolean correcto = false;
         switch (v.getId()){
             case R.id.opcion1:
-                correcto = juego.verificarRespuesta(actual, opciones.get(0));
+                correcto = juego.verificarRespuesta(0);
                 break;
             case R.id.opcion2:
-                correcto = juego.verificarRespuesta(actual, opciones.get(1));
+                correcto = juego.verificarRespuesta(1);
                 break;
             case R.id.opcion3:
-                correcto = juego.verificarRespuesta(actual, opciones.get(2));
+                correcto = juego.verificarRespuesta(2);
                 break;
             case R.id.opcion4:
-                correcto = juego.verificarRespuesta(actual, opciones.get(3));
+                correcto = juego.verificarRespuesta(3);
                 break;
         }
 
         if(correcto){
-
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        LetraInicialActivity.this.correcto.start();
-                    }
-                    catch (IllegalStateException e){
-
-                    }
-                }
-            }).start();
-
-            actualizarLayout();
+            try {
+                juego.getSiguienteLetra();
+                juego.generarOpciones();
+                actualizarLayout();
+                LetraInicialActivity.this.correcto.start();
+            } catch (JuegoTerminadoException e) {
+                Toast.makeText(this, "Has terminado el juego", Toast.LENGTH_SHORT)
+                        .show();
+                try {
+                    celebracion = MediaPlayer.create(LetraInicialActivity.this, R.raw.celebracion);
+                    celebracion.start();
+                } catch (IllegalStateException e2) { }
+                LetraInicialActivity.this.finish();
+            }
         }
         else{
             Vibrator vi = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -138,15 +149,7 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
             try {
                 this.incorrecto.start();
             }
-            catch (IllegalStateException e){
-
-            }
+            catch (IllegalStateException e){ }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        juego.reiniciar();
     }
 }
