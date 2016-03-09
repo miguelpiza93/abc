@@ -1,13 +1,11 @@
 package developers.apus.abecedario.actividades;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -79,7 +77,7 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void run() {
 
-                if (juego.getActual() == null) {
+                if (juego.getLetraActual() == null) {
                     try {
                         juego.getSiguienteLetra();
                         juego.generarOpciones();
@@ -88,7 +86,7 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
                 }
 
                 ImageView letra = (ImageView) findViewById(R.id.letra);
-                letra.setImageResource(ImagenesId.getDrawableId(juego.getActual().getId()));
+                letra.setImageResource(ImagenesId.getDrawableId(juego.getLetraActual().getId()));
 
                 List<Imagen> opciones = juego.getOpciones();
 

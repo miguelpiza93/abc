@@ -1,7 +1,5 @@
 package developers.apus.abecedario.clases;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import developers.apus.abecedario.adapters.Item;
 import developers.apus.abecedario.constantes.TipoJuego;
 import developers.apus.abecedario.excepciones.JuegoTerminadoException;
 
@@ -25,16 +24,19 @@ public class Juego {
 
     private TipoJuego juego;
 
-    private int puntos;
+    private Letra letraActual;
 
-    private boolean inicio;
-
-    private Letra actual;
+    private Imagen imagenActual;
 
     private List<Imagen> opciones;
 
+    private String escrita;
+
+    private int indice;
+
     public Juego(JSONObject diccionario){
         letras = new ArrayList<>();
+        escrita = "";
         Iterator<String> keys = diccionario.keys();
         while( keys.hasNext()){
             String key = keys.next();
@@ -56,7 +58,16 @@ public class Juego {
         Collections.sort(letras, new Comparator<Letra>() {
             @Override
             public int compare(Letra a, Letra b) {
-                return a.getId().compareTo(b.getId());
+                String id = "ni";
+                if(a.getId().equals("_")){
+                    return id.compareTo(b.getId());
+                }
+                else if(b.getId().equals("_")){
+                    return a.getId().compareTo(id);
+                }
+                else{
+                    return a.getId().compareTo(b.getId());
+                }
             }
         });
     }
@@ -81,7 +92,7 @@ public class Juego {
         }
         while(!encontrada && !copia.isEmpty());
         if(encontrada) {
-            actual = letra;
+            letraActual = letra;
             return letra;
         }
         else
@@ -90,7 +101,6 @@ public class Juego {
     }
 
     public Letra getSiguienteLetra() throws JuegoTerminadoException {
-        Log.i("Juego", "inicio getSiguienteLetra");
         Letra letra = null;
         boolean encontrada = false;
         for (int i = 0; i < letras.size() && !encontrada; i++) {
@@ -99,9 +109,8 @@ public class Juego {
                 encontrada = true;
             }
         }
-        Log.i("Juego", "fin getSiguienteLetra");
         if(encontrada){
-            actual = letra;
+            letraActual = letra;
             return letra;
         }
         else{
@@ -110,17 +119,16 @@ public class Juego {
     }
 
     public List<Imagen> generarOpciones() {
-        Log.i("Juego", "inicio generarOpciones");
         opciones = new ArrayList<>();
 
-        opciones.add(actual.getImagenAleatoria());
+        opciones.add(letraActual.getImagenAleatoria());
         Random random = new Random();
         boolean completo = false;
         ArrayList<Integer> sacados = new ArrayList<>();
         while(!completo){
             int i = random.nextInt(letras.size());
             Letra act = letras.get(i);
-            if( !act.getId().equals(actual.getId()) && !sacados.contains(i) ){
+            if( !act.getId().equals(letraActual.getId()) && !sacados.contains(i) ){
                 opciones.add(act.getImagenAleatoria());
                 sacados.add(i);
             }
@@ -129,17 +137,38 @@ public class Juego {
             }
         }
         Collections.shuffle(opciones);
-        Log.i("Juego", "fin generarOpciones");
         return opciones;
     }
 
     public boolean verificarRespuesta(int imagen){
 
-        boolean correcto = opciones.get(imagen).getNombre().startsWith(actual.getId());
+        boolean correcto = opciones.get(imagen).getNombre().startsWith(letraActual.getId());
         if(correcto){
-            actual.mostrar();
+            letraActual.mostrar();
         }
         return correcto;
+    }
+
+    public boolean validarLetra(String letra){
+        if(indice < imagenActual.getNombre().length()){
+            boolean correcto = imagenActual.getNombre().replaceAll("_","\u0148").charAt(indice) == letra.charAt(0);
+            if(correcto){
+                StringBuilder aStringBuilder = new StringBuilder(escrita);
+                aStringBuilder.replace(indice*2, (indice*2) + 1, letra);
+                escrita = aStringBuilder.toString();
+                indice++;
+            }
+            return correcto;
+        }
+        return false;
+    }
+
+    public boolean verificarEscrito(){
+        boolean ok = imagenActual.getNombre().replaceAll("_", "\u0148").equals(escrita.replaceAll(" ", ""));
+        if(ok){
+            letraActual.mostrar();
+        }
+        return ok;
     }
 
     public List<Letra> getLetras() {
@@ -147,19 +176,40 @@ public class Juego {
     }
 
     public void reiniciar(){
-        actual = null;
+        letraActual = null;
         opciones = null;
+        indice = 0;
         for (Letra letra :
                 letras) {
             letra.init();
         }
     }
 
-    public Letra getActual() {
-        return actual;
+    public Letra getLetraActual() {
+        return letraActual;
     }
 
     public List<Imagen> getOpciones() {
         return opciones;
+    }
+
+    public Imagen getImagenActual() {
+        return imagenActual;
+    }
+
+    public Imagen getSiguienteImagenAleatoria() throws JuegoTerminadoException {
+        imagenActual = getSiguienteLetra().getImagenAleatoria();
+        escrita = "";
+        indice = 0;
+        for (int i = 1; i < imagenActual.getNombre().length(); i++) {
+            escrita += "_ ";
+        }
+        escrita += "_";
+
+        return imagenActual;
+    }
+
+    public String getEscrita() {
+        return escrita;
     }
 }

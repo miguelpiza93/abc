@@ -88,6 +88,7 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
             intent = new Intent(getActivity(), LetraInicialActivity.class);
         }
         else if(juego.toUpperCase().equals(TipoJuego.DELETREA)){
+            DeletreaActivity.setJuego(this.juego);
             intent = new Intent(getActivity(), DeletreaActivity.class);
         }
         else if(juego.toUpperCase().equals(TipoJuego.Item_de_prueba)){

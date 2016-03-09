@@ -1,17 +1,32 @@
 package developers.apus.abecedario.actividades;
 
 import android.content.res.Resources;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import developers.apus.abecedario.R;
+import developers.apus.abecedario.clases.Juego;
+import developers.apus.abecedario.constantes.ImagenesId;
+import developers.apus.abecedario.excepciones.JuegoTerminadoException;
 
 public class DeletreaActivity extends AppCompatActivity {
+
+    private MediaPlayer teclado, celebracion;
+    private static Juego juego;
+
+    public static void setJuego(Juego juego) {
+        if(DeletreaActivity.juego == null)
+            DeletreaActivity.juego = juego;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +36,11 @@ public class DeletreaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_li);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        catch (NullPointerException e){}
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,7 +51,31 @@ public class DeletreaActivity extends AppCompatActivity {
 
         LinearLayout layoutLetras = (LinearLayout)findViewById(R.id.matriz_letras);
         inicializarLayoutLetras(layoutLetras);
+        TextView texto = (TextView) findViewById(R.id.texto);
 
+        texto.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getDimension(R.dimen.font));
+        actualizarImagenActual();
+    }
+
+    private void actualizarImagenActual() {
+        try {
+            if (juego.getLetraActual() == null) {
+                juego.getSiguienteImagenAleatoria();
+            }
+            ImageView imagen = (ImageView) findViewById(R.id.imagen);
+            imagen.setImageResource(ImagenesId.getDrawableId(juego.getImagenActual().getNombre()));
+            TextView texto = (TextView) findViewById(R.id.texto);
+            texto.setText(juego.getEscrita());
+        } catch (JuegoTerminadoException e) { }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            public void run() {
+                teclado = MediaPlayer.create( DeletreaActivity.this, R.raw.burbuja );
+            }
+        }).start();
     }
 
     private void inicializarLayoutLetras(LinearLayout layoutLetras) {
@@ -42,6 +84,9 @@ public class DeletreaActivity extends AppCompatActivity {
                 "letras_07", "letras_08", "letras_09", "letras_10", "letras_11", "letras_12", "letras_13",
                 "letras_14", "letras_15", "letras_16", "letras_17", "letras_18", "letras_19", "letras_20",
                 "letras_21", "letras_22", "letras_23", "letras_24", "letras_25", "letras_26", "letras_27"};
+
+        final String[] nombres = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+                "n", "\u0148", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
 
         int indice = 0;
         int numeroFilas =  getResources().getInteger(R.integer.numero_filas_juego_deletrea);
@@ -58,23 +103,15 @@ public class DeletreaActivity extends AppCompatActivity {
             layoutAux.setWeightSum(numeroColumnas);
             for (int j = 0; j < numeroColumnas; j++) {
                 ImageView letraAct = new ImageView(getApplicationContext());
-                String nombre = "";
+                String nombre;
                 if(indice < letras.length){
                     nombre = letras[indice];
-                    final int finalIndice = indice;
-                    letraAct.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(getApplicationContext(), letras[finalIndice], Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    agregarListener(nombres, indice, letraAct);
                 }
                 else{
-                    nombre = "cuadro_blanco";
+                   nombre = "cuadro_blanco";
                 }
-                int resourceId = resources.getIdentifier(nombre, "drawable", pckageName);
-                letraAct.setImageResource(resourceId);
+                letraAct.setImageResource(ImagenesId.getDrawableId(nombre));
                 letraAct.setLayoutParams(params);
                 layoutAux.addView(letraAct);
                 indice++;
@@ -82,5 +119,44 @@ public class DeletreaActivity extends AppCompatActivity {
             layoutAux.setLayoutParams(params);
             layoutLetras.addView(layoutAux);
         }
+    }
+
+    private void agregarListener(final String[]nombres, final int finalIndice, ImageView letraAct) {
+        letraAct.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(juego.validarLetra(nombres[finalIndice])){
+                    TextView texto = (TextView) findViewById(R.id.texto);
+                    texto.setText(juego.getEscrita());
+                }
+                try {
+                    DeletreaActivity.this.teclado.start();
+                }
+                catch (IllegalStateException e){}
+                if(juego.verificarEscrito()){
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                juego.getSiguienteImagenAleatoria();
+                                actualizarImagenActual();
+
+                            } catch (JuegoTerminadoException e) {
+                                Toast.makeText(DeletreaActivity.this, "Has terminado el juego", Toast.LENGTH_SHORT)
+                                        .show();
+                                try {
+                                    celebracion = MediaPlayer.create(DeletreaActivity.this, R.raw.celebracion);
+                                    celebracion.start();
+                                } catch (IllegalStateException e2) { }
+                                DeletreaActivity.this.finish();
+                            }
+                        }
+                    }, 500);
+                }
+            }
+        });
     }
 }

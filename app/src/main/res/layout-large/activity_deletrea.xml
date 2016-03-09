@@ -37,12 +37,13 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3">
+            android:layout_weight="0.4">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/image_not_available"
+                android:layout_centerInParent="true"
                 android:id="@+id/imagen" />
 
             <TextView
@@ -51,14 +52,14 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
                 android:id="@+id/texto"
-                android:paddingTop="7dp"
+                android:paddingTop="5dp"
                 android:layout_alignBottom="@+id/imagen"
                 android:layout_centerHorizontal="true" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7">
+            android:layout_weight="0.6">
 
             <ScrollView
                 android:layout_width="match_parent"

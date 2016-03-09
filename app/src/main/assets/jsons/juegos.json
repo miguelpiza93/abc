@@ -10,11 +10,6 @@
       "nombre":"Deletrea",
       "descripcion": "Selecciona las letras que conforman el nombre de la figura mostrada",
       "portada": "portadas/deletrea.png"
-    },
-    {
-      "nombre":"Item de prueba",
-      "descripcion": "Este item solo es para probar el scroll",
-      "portada": "portadas/deletrea.png"
     }
   ]
 
