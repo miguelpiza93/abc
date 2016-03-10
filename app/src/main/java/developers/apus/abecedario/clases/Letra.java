@@ -80,4 +80,9 @@ public class Letra {
     public boolean isMostrada() {
         return mostrada;
     }
+
+    @Override
+    public String toString() {
+        return id;
+    }
 }

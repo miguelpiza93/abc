@@ -98,7 +98,7 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
             for (Letra l: letras ) {
                 imagenes.addAll(l.getImagenes());
             }
-            Collections.shuffle(imagenes);
+            //Collections.shuffle(imagenes);
 
             PruebaActivity.opciones = imagenes;
             intent = new Intent(getActivity(), PruebaActivity.class);

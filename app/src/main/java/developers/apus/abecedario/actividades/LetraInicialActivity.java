@@ -90,17 +90,29 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
 
                 List<Imagen> opciones = juego.getOpciones();
 
-                ImageView opcion1 = (ImageView) findViewById(R.id.opcion1);
-                opcion1.setImageResource(ImagenesId.getDrawableId(opciones.get(0).getNombre()));
+                try {
+                    ImageView opcion1 = (ImageView) findViewById(R.id.opcion1);
+                    opcion1.setImageResource(ImagenesId.getDrawableId(opciones.get(0).getNombre()));
 
-                ImageView opcion2 = (ImageView) findViewById(R.id.opcion2);
-                opcion2.setImageResource(ImagenesId.getDrawableId(opciones.get(1).getNombre()));
+                    ImageView opcion2 = (ImageView) findViewById(R.id.opcion2);
+                    opcion2.setImageResource(ImagenesId.getDrawableId(opciones.get(1).getNombre()));
 
-                ImageView opcion3 = (ImageView) findViewById(R.id.opcion3);
-                opcion3.setImageResource(ImagenesId.getDrawableId(opciones.get(2).getNombre()));
+                    ImageView opcion3 = (ImageView) findViewById(R.id.opcion3);
+                    opcion3.setImageResource(ImagenesId.getDrawableId(opciones.get(2).getNombre()));
 
-                ImageView opcion4 = (ImageView) findViewById(R.id.opcion4);
-                opcion4.setImageResource(ImagenesId.getDrawableId(opciones.get(3).getNombre()));
+                    ImageView opcion4 = (ImageView) findViewById(R.id.opcion4);
+                    opcion4.setImageResource(ImagenesId.getDrawableId(opciones.get(3).getNombre()));
+                }
+                catch (NullPointerException e){
+                    String a = opciones.get(0).getNombre();
+                    String b = opciones.get(1).getNombre();
+                    String c = opciones.get(2).getNombre();
+                    String d = opciones.get(3).getNombre();
+                    int e1 = ImagenesId.getDrawableId(a);
+                    int f = ImagenesId.getDrawableId(b);
+                    int g = ImagenesId.getDrawableId(c);
+                    int h = ImagenesId.getDrawableId(d);
+                }
             }
         });
     }
@@ -125,10 +137,10 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
 
         if(correcto){
             try {
+                LetraInicialActivity.this.correcto.start();
                 juego.getSiguienteLetra();
                 juego.generarOpciones();
                 actualizarLayout();
-                LetraInicialActivity.this.correcto.start();
             } catch (JuegoTerminadoException e) {
                 Toast.makeText(this, "Has terminado el juego", Toast.LENGTH_SHORT)
                         .show();

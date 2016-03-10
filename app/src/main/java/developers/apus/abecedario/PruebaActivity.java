@@ -16,6 +16,7 @@ import developers.apus.abecedario.actividades.LetraInicialActivity;
 import developers.apus.abecedario.clases.Imagen;
 import developers.apus.abecedario.clases.Juego;
 import developers.apus.abecedario.clases.Letra;
+import developers.apus.abecedario.constantes.ImagenesId;
 import developers.apus.abecedario.excepciones.JuegoTerminadoException;
 
 public class PruebaActivity extends AppCompatActivity {
@@ -55,29 +56,20 @@ public class PruebaActivity extends AppCompatActivity {
 
     private void actualizarLayout() {
         try {
-            Resources resources = getResources();
-            ImageView opcion1 = (ImageView)findViewById(R.id.opcion1);
-            final int opcion1Id = resources.getIdentifier(opciones.get(i).getNombre(), "drawable", getPackageName());
-            opcion1.setImageResource(opcion1Id);
-
+            ImageView opcion1 = (ImageView) findViewById(R.id.opcion1);
+            opcion1.setImageResource(ImagenesId.getDrawableId(opciones.get(i).getNombre()));
             i++;
 
-            ImageView opcion2 = (ImageView)findViewById(R.id.opcion2);
-            final int opcion2Id = resources.getIdentifier(opciones.get(i).getNombre(), "drawable", getPackageName());
-            opcion2.setImageResource(opcion2Id);
-
+            ImageView opcion2 = (ImageView) findViewById(R.id.opcion2);
+            opcion2.setImageResource(ImagenesId.getDrawableId(opciones.get(i).getNombre()));
             i++;
 
-            ImageView opcion3 = (ImageView)findViewById(R.id.opcion3);
-            final int opcion3Id = resources.getIdentifier(opciones.get(i).getNombre(), "drawable", getPackageName());
-            opcion3.setImageResource(opcion3Id);
-
+            ImageView opcion3 = (ImageView) findViewById(R.id.opcion3);
+            opcion3.setImageResource(ImagenesId.getDrawableId(opciones.get(i).getNombre()));
             i++;
 
-            ImageView opcion4 = (ImageView)findViewById(R.id.opcion4);
-            final int opcion4Id = resources.getIdentifier(opciones.get(i).getNombre(), "drawable", getPackageName());
-            opcion4.setImageResource(opcion4Id);
-
+            ImageView opcion4 = (ImageView) findViewById(R.id.opcion4);
+            opcion4.setImageResource(ImagenesId.getDrawableId(opciones.get(i).getNombre()));
             i++;
 
 

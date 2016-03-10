@@ -20,7 +20,7 @@ import developers.apus.abecedario.excepciones.JuegoTerminadoException;
 
 public class DeletreaActivity extends AppCompatActivity {
 
-    private MediaPlayer teclado, celebracion;
+    private MediaPlayer teclado, celebracion, correcto;
     private static Juego juego;
 
     public static void setJuego(Juego juego) {
@@ -74,6 +74,7 @@ public class DeletreaActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
                 teclado = MediaPlayer.create( DeletreaActivity.this, R.raw.burbuja );
+                correcto = MediaPlayer.create( DeletreaActivity.this, R.raw.correcto );
             }
         }).start();
     }
@@ -135,7 +136,7 @@ public class DeletreaActivity extends AppCompatActivity {
                 }
                 catch (IllegalStateException e){}
                 if(juego.verificarEscrito()){
-
+                    DeletreaActivity.this.correcto.start();
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
