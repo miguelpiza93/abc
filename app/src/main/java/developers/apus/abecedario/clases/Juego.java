@@ -47,7 +47,6 @@ public class Juego {
                     Imagen imagen = new Imagen(array.getString(i), null);//TODO hacer set del sonido
                     imagenes.add(imagen);
                 }
-
                 Letra letra = new Letra(key, null, imagenes);//TODO hacer set del sonido
                 letras.add(letra);
             } catch (JSONException e) {

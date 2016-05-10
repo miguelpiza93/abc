@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import developers.apus.abecedario.R;
 import developers.apus.abecedario.constantes.ImagenesId;
+import developers.apus.abecedario.constantes.SonidosId;
 import developers.apus.abecedario.utilidades.Splash;
 
 public class SplashActivity extends Activity {
@@ -23,6 +24,7 @@ public class SplashActivity extends Activity {
         new Thread(new Runnable() {
             public void run() {
                 ImagenesId.init();
+                SonidosId.init();
             }
         }).start();
 
