@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import developers.apus.abecedario.R;
+import developers.apus.abecedario.constantes.ImagenesId;
 import developers.apus.abecedario.interfaces.IAdapterComunication;
 
 /**
@@ -34,7 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.JuegoViewHolde
 
     @Override
     public void onBindViewHolder(JuegoViewHolder viewHolder, int i) {
-        //viewHolder.imagen.setImageResource(R.drawable.youtube);//TODO hacer set de minuatura
+        viewHolder.imagen.setImageResource(ImagenesId.getDrawableId(items.get(i).getPortada()));
         viewHolder.nombre.setText(items.get(i).getNombre());
         viewHolder.descripcion.setText(items.get(i).getDescripcion());
     }

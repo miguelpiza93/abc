@@ -4,12 +4,12 @@
     {
       "nombre": "Letra Inicial",
       "descripcion": "Escoje la figura que comienza con la letra indicada",
-      "portada": "portadas/letraInicial.png"
+      "portada": "letra_inicial"
     },
     {
       "nombre":"Deletrea",
       "descripcion": "Selecciona las letras que conforman el nombre de la figura mostrada",
-      "portada": "portadas/deletrea.png"
+      "portada": "deletrea"
     }
   ]
 
