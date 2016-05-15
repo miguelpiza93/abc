@@ -1,28 +1,28 @@
 {
   "a":
   [
+    "abeja",
     "anillo",
-    "avion",
     "aros",
     "ave",
-    "abeja"
+    "avion"
   ],
   "b": 
   [
-    "bota",
     "banano",
     "barco",
-    "burro",
+    "bota",
     "bruja",
-    "buho"
+    "buho",
+    "burro"
   ],
   "c": 
   [
-    "casa",
+    "caballo",
     "camisa",
+    "casa",
     "cometa",
-    "corona",
-    "caballo"
+    "corona"
   ],
   "d": 
   [
@@ -34,21 +34,21 @@
   "e": 
   [
     "elefante",
-    "espada",
-    "enano"
+    "enano",
+    "espada"
   ],
   "f": 
   [
-    "foto",
-    "fogata",
     "faro",
-    "flecha"
+    "flecha",
+    "fogata",
+    "foto"
   ],
   "g": 
   [
-    "gorila",
-    "gorra",
     "gato",
+    "gorra",
+    "gorila",
     "gusano"
   ],
   "h": 
@@ -61,16 +61,16 @@
   "i": 
   [
     "iglesia",
-    "indios",
+    "iglu",
     "iguana",
-	"iglu"
+    "indios"
   ],
   "j": 
   [
-    "jirafa",
-    "jarra",
+    "jabali",
     "jabon",
-	"jabali"
+    "jarra",
+    "jirafa"
   ],
   "k": 
   [
@@ -79,18 +79,18 @@
   ],
   "l": 
   [
-    "luna",
-    "lupa",
+    "leon",
     "loro",
-    "leon"
+    "luna",
+    "lupa"
   ],
   "m": 
   [
-    "mama",
-    "mimo",
-    "mano",
-    "mono",
     "maleta",
+    "mama",
+    "mano",
+    "mimo",
+    "mono",
     "moto"
   ],
   "n": 
@@ -105,17 +105,17 @@
   ],
   "o": 
   [
-    "oso",
-    "oveja",
     "ojos",
-	"ornitorrinco"
+    "ornitorrinco",
+    "oso",
+    "oveja"
   ],
   "p": 
   [
     "papa",
+    "pelota",
     "pipa",
-    "princesa",
-    "pelota"
+    "princesa"
   ],
   "q": 
   [
@@ -124,40 +124,40 @@
   ],
   "r": 
   [
-    "rosa",
     "raton",
-    "reloj"
+    "reloj",
+    "rosa"
   ],
   "s": 
   [
-    "sapo",
     "sandia",
+    "sapo",
     "sofa"
   ],
   "t": 
   [
-    "trebol",
+    "telefono",
     "tetero",
-    "telefono"
+    "trebol"
   ],
   "u": 
   [
-    "uva",
+    "uno",
     "u_a",
-    "uno"
+    "uva"
   ],
   "v": 
   [
-    "vela",
     "vaca",
-    "venado",
-    "vaso"
+    "vaso",
+    "vela",
+    "venado"
   ],
   "w": 
   [
-    "wifi",
+    "walle",
     "wanda",
-    "walle"
+    "wifi"
   ],
   "x": 
   [
@@ -165,15 +165,15 @@
   ],
   "y": 
   [
+    "yegua",
     "yoyo",
-    "yunque",
-    "yegua"
+    "yunque"
   ],
   "z": 
   [
-    "zorro",
-    "zorrillo",
+    "zanahoria",
     "zapatos",
-    "zanahoria"
+    "zorrillo",
+    "zorro"
   ]
 }
