@@ -13,7 +13,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import developers.apus.abecedario.PruebaActivity;
@@ -61,7 +60,6 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
-
         String json = Util.leerArchivo(getResources().getString(R.string.juegos), rootView.getContext());
 
         try {
@@ -73,8 +71,6 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return rootView;
     }
 
@@ -91,6 +87,10 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
             DeletreaActivity.setJuego(this.juego);
             intent = new Intent(getActivity(), DeletreaActivity.class);
         }
+        else if(juego.toUpperCase().equals(TipoJuego.APENDICE)){
+            ApendiceFragment.setJuego(this.juego);
+            intent = new Intent(getActivity(), ApendiceFragment.class);
+        }
         else if(juego.toUpperCase().equals(TipoJuego.Item_de_prueba)){
             ArrayList<Imagen> imagenes = new ArrayList<>();
 
@@ -98,8 +98,6 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
             for (Letra l: letras ) {
                 imagenes.addAll(l.getImagenes());
             }
-            //Collections.shuffle(imagenes);
-
             PruebaActivity.opciones = imagenes;
             intent = new Intent(getActivity(), PruebaActivity.class);
         }
