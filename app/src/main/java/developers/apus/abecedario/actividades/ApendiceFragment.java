@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 import developers.apus.abecedario.R;
@@ -34,7 +37,20 @@ public class ApendiceFragment extends AppCompatActivity implements IAdapterComun
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_apendice);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_li);
+        setSupportActionBar(toolbar);
 
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        catch (NullPointerException e){}
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApendiceFragment.this.finish();
+            }
+        });
         // Obtener el Recycler
         recycler = (RecyclerView) findViewById(R.id.recicladorApendice);
         recycler.setHasFixedSize(true);

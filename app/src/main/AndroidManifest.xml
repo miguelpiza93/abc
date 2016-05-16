@@ -37,8 +37,9 @@
             android:label="@string/deletrea"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".actividades.ApendiceFragment" >
-        </activity>
+        <activity
+            android:name=".actividades.ApendiceFragment"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
