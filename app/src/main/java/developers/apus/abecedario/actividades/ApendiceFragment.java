@@ -88,4 +88,9 @@ public class ApendiceFragment extends AppCompatActivity implements IAdapterComun
        sonido = MediaPlayer.create(ApendiceFragment.this, SonidosId.getRawId(juego));
        sonido.start();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
