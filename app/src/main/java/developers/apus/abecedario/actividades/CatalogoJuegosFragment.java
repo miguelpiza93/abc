@@ -27,6 +27,10 @@ import developers.apus.abecedario.interfaces.IAdapterComunication;
 import developers.apus.abecedario.utilidades.Json;
 import developers.apus.abecedario.utilidades.Util;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+
 /**
  * Created by Miguel on 24/02/2016.
  */
@@ -35,6 +39,8 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
     private RecyclerView recycler;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager lManager;
+    private static InterstitialAd interstitial;
+    private static AdView adView;
     private Juego juego;
 
     @Override
@@ -42,6 +48,25 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
         super.onCreate(savedInstanceState);
 
         View rootView = inflater.inflate(R.layout.catalogo_fragment, container, false);
+
+        adView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice( AdRequest.DEVICE_ID_EMULATOR )
+                .build();
+        adView.loadAd(adRequest);
+
+        // Create the interstitial.
+        interstitial = new InterstitialAd( getActivity( ) );
+        interstitial.setAdUnitId(getString(R.string.intersticial));
+
+        // Create ad request.
+        AdRequest adRequestI = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        // Begin loading your interstitial.
+        interstitial.loadAd(adRequestI);
+
 
         JSONObject diccionario = null;
         try {
@@ -101,7 +126,34 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
             PruebaActivity.opciones = imagenes;
             intent = new Intent(getActivity(), PruebaActivity.class);
         }
-        if( intent != null)
+        if( intent != null) {
             startActivity(intent);
+            if (interstitial.isLoaded())
+            {
+                interstitial.show();
+            }
+        }
     }
+
+    @Override
+    public void onPause()
+    {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume()
+    {
+        adView.resume();
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        adView.destroy();
+        super.onDestroy();
+    }
+
 }
