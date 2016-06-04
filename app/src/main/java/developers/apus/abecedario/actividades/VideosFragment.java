@@ -15,16 +15,14 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import developers.apus.abecedario.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
-//import com.google.android.gms.ads.AdRequest;
-//import com.google.android.gms.ads.AdView;
+import developers.apus.abecedario.R;
 
 public class VideosFragment extends Fragment
 {
-//    private AdView adView;
-
-
+    private AdView adView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,11 +30,11 @@ public class VideosFragment extends Fragment
 
         final View rootView = inflater.inflate(R.layout.fragment_video, container, false);
 
-        //        adView = (AdView) findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice( AdRequest.DEVICE_ID_EMULATOR )
-//                .build();
-//        adView.loadAd(adRequest);
+                adView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice( AdRequest.DEVICE_ID_EMULATOR )
+                .build();
+        adView.loadAd(adRequest);
 
         VideoView videoView = (VideoView) rootView.findViewById(R.id.video);
         MediaController mc = new MediaController( getActivity() );
@@ -102,22 +100,22 @@ public class VideosFragment extends Fragment
     @Override
     public void onPause()
     {
+        adView.pause();
         super.onPause();
-//        adView.pause();
     }
 
     @Override
     public void onResume()
     {
+        adView.resume();
         super.onResume();
-//        adView.resume();
     }
 
     @Override
     public void onDestroy()
     {
+        adView.destroy();
         super.onDestroy();
-//        adView.destroy();
     }
 
 }
