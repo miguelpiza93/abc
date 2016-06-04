@@ -24,8 +24,8 @@ public class DeletreaActivity extends AppCompatActivity {
     private static Juego juego;
 
     public static void setJuego(Juego juego) {
-        if(DeletreaActivity.juego == null)
-            DeletreaActivity.juego = juego;
+        //if(DeletreaActivity.juego == null)
+        DeletreaActivity.juego = juego;
     }
 
     @Override
