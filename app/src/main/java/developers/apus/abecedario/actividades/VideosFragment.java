@@ -44,7 +44,7 @@ public class VideosFragment extends Fragment
 
         final ListView listView = (ListView) rootView.findViewById(R.id.listView1);
 
-        String[] values = new String[] {"Abecedario", "Cancion Alvin"};
+        String[] values = new String[] {"Abecedario", "Canci\u00f3n Alvin"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, values)
         {
             @Override
