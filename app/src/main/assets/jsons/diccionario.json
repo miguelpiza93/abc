@@ -3,6 +3,9 @@
   [
     "abeja",
     "anillo",
+	"ara_a",
+	"arbol",
+	"arcoiris",
     "aros",
     "ave",
     "avion"
@@ -35,7 +38,12 @@
   [
     "elefante",
     "enano",
-    "espada"
+	"escalera",
+	"escoba",
+	"escorpion",
+    "espada",
+	"espejo",
+	"estrella"
   ],
   "f": 
   [
@@ -63,7 +71,9 @@
     "iglesia",
     "iglu",
     "iguana",
-    "indios"
+	"iman",
+    "indios",
+	"isla"
   ],
   "j": 
   [
@@ -105,7 +115,10 @@
   ],
   "o": 
   [
+	"ocho",
     "ojos",
+	"olla",
+	"oreja",
     "ornitorrinco",
     "oso",
     "oveja"
@@ -142,9 +155,12 @@
   ],
   "u": 
   [
-    "uno",
     "u_a",
-    "uva"
+	"unicornio",
+	"uniforme",
+	"universo",
+    "uno",
+	"uva"
   ],
   "v": 
   [
