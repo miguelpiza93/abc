@@ -6,5 +6,7 @@
     <string name="title_activity_apendice">Apendice</string>
     <string name="banner_catalogo_juegos">ca-app-pub-6455142835794611/1710100683</string>
     <string name="banner_videos">ca-app-pub-6455142835794611/9314092682</string>
+    <!-- TODO: Google's sample AdMob app ID. Replace with this app's real ID (ca-app-pub-…~…) before release. -->
+    <string name="admob_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="intersticial">ca-app-pub-6455142835794611/8626311486</string>
 </resources>

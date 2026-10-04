@@ -14,10 +14,9 @@ public class SonidosId {
     public static void init(){
         ids = new TreeMap<>();
         Field[] raws = R.raw.class.getFields();
-        R.raw rawResources = new R.raw();
         for (Field f : raws) {
             try {
-                ids.put(f.getName(),f.getInt(rawResources));
+                ids.put(f.getName(),f.getInt(null));
             } catch (Exception e) {
                 e.printStackTrace();
             }

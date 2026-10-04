@@ -15,12 +15,11 @@ public class ImagenesId {
     public static void init(){
         ids = new TreeMap<>();
         Field[] drawables = R.drawable.class.getFields();
-        R.drawable drawableResources = new R.drawable();
         for (Field f : drawables) {
             try {
                 if(!f.getName().equals("splash"))
                 {
-                    ids.put(f.getName(),f.getInt(drawableResources));
+                    ids.put(f.getName(),f.getInt(null));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
