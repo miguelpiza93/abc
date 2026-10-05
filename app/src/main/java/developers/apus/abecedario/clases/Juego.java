@@ -150,7 +150,7 @@ public class Juego {
 
     public boolean validarLetra(String letra){
         if(indice < imagenActual.getNombre().length()){
-            boolean correcto = imagenActual.getNombre().replaceAll("_","\u0148").charAt(indice) == letra.charAt(0);
+            boolean correcto = imagenActual.getNombre().replaceAll("_","\u00f1").charAt(indice) == letra.charAt(0);
             if(correcto){
                 StringBuilder aStringBuilder = new StringBuilder(escrita);
                 aStringBuilder.replace(indice*2, (indice*2) + 1, letra);
@@ -163,7 +163,7 @@ public class Juego {
     }
 
     public boolean verificarEscrito(){
-        boolean ok = imagenActual.getNombre().replaceAll("_", "\u0148").equals(escrita.replaceAll(" ", ""));
+        boolean ok = imagenActual.getNombre().replaceAll("_", "\u00f1").equals(escrita.replaceAll(" ", ""));
         if(ok){
             letraActual.mostrar();
         }

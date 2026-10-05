@@ -28,7 +28,8 @@ public class ImagenesId {
     }
 
     public static int getDrawableId(String nombre){
-        return ids.get(nombre);
+        // "_" (Ñ) is not a valid resource name, so its files are named letra_enie.
+        return ids.get("_".equals(nombre) ? "letra_enie" : nombre);
     }
 
 }
