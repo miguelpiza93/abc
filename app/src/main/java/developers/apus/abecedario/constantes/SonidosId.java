@@ -25,6 +25,8 @@ public class SonidosId {
 
     public static int getRawId(String nombre){
         // "_" (Ñ) is not a valid resource name, so its files are named letra_enie.
-        return ids.get("_".equals(nombre) ? "letra_enie" : nombre);
+        Integer id = ids.get("_".equals(nombre) ? "letra_enie" : nombre);
+        // 0 when there is no recording for this word yet.
+        return id != null ? id : 0;
     }
 }
