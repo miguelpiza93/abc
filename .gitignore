@@ -10,3 +10,8 @@ tasks.xml
 .DS_Store
 /build
 /captures
+.kotlin
+# Local release signing config (never commit)
+/keystore.properties
+*.jks
+*.keystore

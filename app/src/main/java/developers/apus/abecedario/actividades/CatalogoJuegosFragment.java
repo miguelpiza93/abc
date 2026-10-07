@@ -2,9 +2,9 @@ package developers.apus.abecedario.actividades;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +27,14 @@ import developers.apus.abecedario.interfaces.IAdapterComunication;
 import developers.apus.abecedario.utilidades.Json;
 import developers.apus.abecedario.utilidades.Util;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 /**
  * Created by Miguel on 24/02/2016.
@@ -50,22 +55,10 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
         View rootView = inflater.inflate(R.layout.catalogo_fragment, container, false);
 
         adView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice( AdRequest.DEVICE_ID_EMULATOR )
-                .build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
-        // Create the interstitial.
-        interstitial = new InterstitialAd( getActivity( ) );
-        interstitial.setAdUnitId(getString(R.string.intersticial));
-
-        // Create ad request.
-        AdRequest adRequestI = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-
-        // Begin loading your interstitial.
-        interstitial.loadAd(adRequestI);
+        loadInterstitial();
 
 
         JSONObject diccionario = null;
@@ -128,11 +121,36 @@ public class CatalogoJuegosFragment extends Fragment implements IAdapterComunica
         }
         if( intent != null) {
             startActivity(intent);
-            if (interstitial.isLoaded())
+            if (interstitial != null)
             {
-                interstitial.show();
+                interstitial.show(getActivity());
             }
         }
+    }
+
+    private void loadInterstitial() {
+        InterstitialAd.load(requireContext(), getString(R.string.intersticial), new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        interstitial = interstitialAd;
+                        interstitial.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // An interstitial can only be shown once; load the next one.
+                                interstitial = null;
+                                if (isAdded()) {
+                                    loadInterstitial();
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        interstitial = null;
+                    }
+                });
     }
 
     @Override

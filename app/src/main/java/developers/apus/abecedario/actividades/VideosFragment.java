@@ -3,7 +3,7 @@ package developers.apus.abecedario.actividades;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +31,7 @@ public class VideosFragment extends Fragment
         final View rootView = inflater.inflate(R.layout.fragment_video, container, false);
 
                 adView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice( AdRequest.DEVICE_ID_EMULATOR )
-                .build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
 
         VideoView videoView = (VideoView) rootView.findViewById(R.id.video);

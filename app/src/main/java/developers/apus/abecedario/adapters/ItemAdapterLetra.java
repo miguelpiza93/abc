@@ -1,6 +1,6 @@
 package developers.apus.abecedario.adapters;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +95,9 @@ public class ItemAdapterLetra extends RecyclerView.Adapter<ItemAdapterLetra.Letr
                 nombre = "Xilófono";
                 break;
             default:
-                nombre = String.valueOf(nombreJson.charAt(0)).toUpperCase().concat(nombreJson.substring(1));
+                // "_" stands for "ñ" in diccionario.json names.
+                String conEnie = nombreJson.replace("_", "\u00f1");
+                nombre = String.valueOf(conEnie.charAt(0)).toUpperCase().concat(conEnie.substring(1));
         }
         viewHolder.nombre.setText(nombre);
     }

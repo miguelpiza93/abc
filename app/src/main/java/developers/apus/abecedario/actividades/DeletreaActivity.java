@@ -4,8 +4,8 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -87,7 +87,7 @@ public class DeletreaActivity extends AppCompatActivity {
                 "letras_21", "letras_22", "letras_23", "letras_24", "letras_25", "letras_26", "letras_27"};
 
         final String[] nombres = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-                "n", "\u0148", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+                "n", "\u00f1", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
 
         int indice = 0;
         int numeroFilas =  getResources().getInteger(R.integer.numero_filas_juego_deletrea);

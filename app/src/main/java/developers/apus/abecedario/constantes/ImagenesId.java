@@ -15,12 +15,11 @@ public class ImagenesId {
     public static void init(){
         ids = new TreeMap<>();
         Field[] drawables = R.drawable.class.getFields();
-        R.drawable drawableResources = new R.drawable();
         for (Field f : drawables) {
             try {
                 if(!f.getName().equals("splash"))
                 {
-                    ids.put(f.getName(),f.getInt(drawableResources));
+                    ids.put(f.getName(),f.getInt(null));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -29,7 +28,8 @@ public class ImagenesId {
     }
 
     public static int getDrawableId(String nombre){
-        return ids.get(nombre);
+        // "_" (Ñ) is not a valid resource name, so its files are named letra_enie.
+        return ids.get("_".equals(nombre) ? "letra_enie" : nombre);
     }
 
 }

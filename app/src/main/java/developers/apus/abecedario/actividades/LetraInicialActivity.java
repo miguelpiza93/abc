@@ -3,9 +3,9 @@ package developers.apus.abecedario.actividades;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -137,19 +137,15 @@ public class LetraInicialActivity extends AppCompatActivity implements View.OnCl
         else
         {
             boolean correcto = false;
-            switch (v.getId()){
-                case R.id.opcion1:
-                    correcto = juego.verificarRespuesta(0);
-                    break;
-                case R.id.opcion2:
-                    correcto = juego.verificarRespuesta(1);
-                    break;
-                case R.id.opcion3:
-                    correcto = juego.verificarRespuesta(2);
-                    break;
-                case R.id.opcion4:
-                    correcto = juego.verificarRespuesta(3);
-                    break;
+            int id = v.getId();
+            if (id == R.id.opcion1) {
+                correcto = juego.verificarRespuesta(0);
+            } else if (id == R.id.opcion2) {
+                correcto = juego.verificarRespuesta(1);
+            } else if (id == R.id.opcion3) {
+                correcto = juego.verificarRespuesta(2);
+            } else if (id == R.id.opcion4) {
+                correcto = juego.verificarRespuesta(3);
             }
 
             if(correcto){
